@@ -1,8 +1,8 @@
 ## GTFS-ride
 
-**Current version published `January 1, 2018`. See [Revision History](../../CHANGES.md) for more details.**
+**Current version published `January 25, 2021`.**
 
-This document explains the types of files that comprise a GTFS-ride dataset and defines the fields used in all of those files. The bolded files are those unique to GTFS-ride. They are not included in standard GTFS.
+The GTFS-ride format was modified for the purpose of modeling dwell times within TheTransitClock. This document explains the types of files that comprise a GTFS-ride dataset and defines the fields used in all of those files. The bolded files are those unique to GTFS-ride. They are not included in standard GTFS.
 
 ## Table of Contents
 
@@ -17,7 +17,7 @@ This document explains the types of files that comprise a GTFS-ride dataset and 
     -   [*__ride\_feed\_info.txt__*](#ride_feed_infotxt)
 
 ## Term Definitions
-_Retrieved from GTFS [https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md)_
+_Retrieved from GTFS [https://github.com/TheTransitClock/GTFS-ride/blob/master/spec/en/reference.md](hhttps://github.com/TheTransitClock/GTFS-ride/blob/master/spec/en/reference.md)_
 >This section defines terms that are used throughout this document.
 >
 >* **Field required** - The field column must be included in your feed, and a value must be provided for each record. Some required fields permit an empty string as a value. To enter an empty string, just omit any text between the commas for that field. Note that 0 is interpreted as "a string of value 0", and is not an empty string. Please see the field definition for details.
@@ -43,11 +43,11 @@ This specification includes the following files along with their associated cont
 |  [frequencies.txt](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#frequenciestxt)  | Optional | Headway (time between trips) for routes with variable frequency of service. |
 |  [transfers.txt](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
 |  [feed_info.txt](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#feed_infotxt)  | Optional | Additional information about the feed itself, including publisher, version, and expiration information. |
-|  [*__board_alight.txt__*](#board_alighttxt) | Optional | Tracks boardings/alightings along with associated information at stop-level. |
-|  [*__trip_capacity.txt__*](#trip_capacitytxt) | Optional | Provides the capability to identify the capacities of vehicles used to provide service. |
+|  [*__board_alight.txt__*](#board_alighttxt) | **Required** | Tracks boardings/alightings along with associated information at stop-level. |
+|  [*__trip_capacity.txt__*](#trip_capacitytxt) | **Required** | Provides the capability to identify the capacities of vehicles used to provide service. |
 |  [*__rider_trip.txt__*](#rider_triptxt) | Optional | Includes anonymized data about specific riders' trip. |
 |  [*__ridership.txt__*](#ridershiptxt) | Optional | Provides the capability to supply ridership counts at various levels of aggregation. |
-|  [*__ride_feed_info.txt__*](#ride_feed_infotxt) | **Required** | Information specific to the source and attributes of the addional ridership files. |
+|  [*__ride_feed_info.txt__*](#ride_feed_infotxt) | **Required** | Information specific to the source and attributes of the additional ridership files. |
 
 ## File Requirements
 _Retrieved from GTFS [https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md)_
@@ -72,9 +72,11 @@ _Retrieved from GTFS [https://github.com/google/transit/blob/master/gtfs/spec/en
 
 _Only files unique to GTFS-ride are defined below. Definitions for all other files may be found at [https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md)_
 
+**Bolded** files are unique to TheTransitClock's version of GTFS-ride.
+
 ### *__board_alight.txt__*
 
-File: **Optional**
+File: **Required**
 
 |  Field Name | Required | Details |
 |  ------ | ------ | ------ |
@@ -94,47 +96,54 @@ File: **Optional**
 |   |  | * **6** - Whole trip was added as a replacement.  |
 |   |  | * **7** - This **stop_time** was added to a scheduled trip.    |
 |   |  | * **8** - This **stop_time** was added to a scheduled trip, replacing something cancelled.    |
-| boardings | Optional | The **boardings** field contains the number of boardings at (or nearest to, in the case of boardings between stops ) the associated **stop_id** as collected by either automated or manual methods. Non-negative integer. |
-| alightings | Optional | The **alightings** field contains the number of alightings at (or nearest to, in the case of alightings between stops) the associated **stop_id** as collected by either automated or manual methods. Non-negative integer. |
+| boardings | **Required** | The **boardings** field contains the number of boardings at (or nearest to, in the case of boardings between stops ) the associated **stop_id** as collected by either automated or manual methods. Non-negative integer. |
+| alightings | **Required** | The **alightings** field contains the number of alightings at (or nearest to, in the case of alightings between stops) the associated **stop_id** as collected by either automated or manual methods. Non-negative integer. |
 | current_load | Optional | The **current_load** field contains the calculated percentage current load of a vehicle at the identified stop. **load_type** specifies the state at which **current_load** is measured; if no value is given in **load_type**, **current_load** is arriving load.  Non-negative integer.|
-| load_count | Optional | The **load_count** field contains the count of the number of riders onboard a vehicle at the identified stop. **load_type** specifies the state at which **load_count** is measured; if no value is given in **load_type**, **load_count** is arriving count.  Non-negative integer.
-| load_type | Optional | The **load_type** field specifies the state (arriving or departing) at which **current_load** and/or **load_count** is measured. |
+| load_count | **Required** | The **load_count** field contains the count of the number of riders onboard a vehicle at the identified stop. **load_type** specifies the state at which **load_count** is measured; if no value is given in **load_type**, **load_count** is arriving count.  Non-negative integer.
+| load_type | **Required** | The **load_type** field specifies the state (arriving or departing) at which **current_load** and/or **load_count** is measured. |
 |   |  | * **0** - Arriving.  |
 |   |  | * **1** - Departing.  |
-| rack_down | Optional | The **rack_down** field indicates whether an external bike rack was deployed or remained down at the associated **stop_id**. This field should be used in conjunction with **bike_boardings** and **bike_alightings** if complete bike boarding and alighting counts are available. |
+| rack_down | **Required** | The **rack_down** field indicates whether an external bike rack was deployed or remained down at the associated **stop_id**. This field should be used in conjunction with **bike_boardings** and **bike_alightings** if complete bike boarding and alighting counts are available. |
 |   |  | * **0** - Bike rack retracted and/or stowed.  |
 |   |  | * **1** - Bike rack deployed and/or in use.  |
 | bike_boardings | Optional | The **bike_boardings** field contains the total count of bike boardings at the identified stop and trip. This value represents both bikes racked externally and bikes brought inside the passenger compartment. Non-negative integer. |
 | bike_alightings | Optional | The **bike_alightings** field contains the total count of bike alightings at the identified stop and trip. This value represents both bikes racked externally and bikes brought inside the passenger compartment. Non-negative integer. |
-| ramp_used | Optional | The **ramp_used** field indicates whether a ramp or lift was used at the associated **stop_id**. This field should be used in conjunction with **ramp_boardings** and **ramp_alightings** if complete ramp/lift boarding and alighting counts are available. |
+| ramp_used | **Required** | The **ramp_used** field indicates whether a ramp or lift was used at the associated **stop_id**. This field should be used in conjunction with **ramp_boardings** and **ramp_alightings** if complete ramp/lift boarding and alighting counts are available. |
 |   |  | * **0** - No ramp/lift used.  |
 |   |  | * **1** - Ramp/lift deployed.  |
 | ramp_boardings | Optional | The **ramp_boardings** field contains the total count of ramp or lift deployed boardings at the identified **stop_id**. Non-negative integer. |
 | ramp_alightings | Optional | The **ramp_alightings** field contains the total count of ramp or lift deployed alightings at the identified **stop_id**. Non-negative integer. |
-| service_date | Optional | The **service_date** field contains the date of the associated boarding and/or alighting data at the identified stop. The format is YYYYMMDD. |
-| service_arrival_time | Optional | The **service_arrival_time** field contains the time of the actual arrival at the identified stop. The format is HH:MM:SS. |
-| service_departure_time | Optional | The **service_departure_time** field contains the time of the actual departure from the identified stop. The format is HH:MM:SS. |
+| service_date | **Required** | The **service_date** field contains the date of the associated boarding and/or alighting data at the identified stop. The format is YYYYMMDD. |
+| service_arrival_time | **Required** | The **service_arrival_time** field contains the time of the actual arrival at the identified stop. The format is HH:MM:SS. |
+| service_departure_time | **Required** | The **service_departure_time** field contains the time of the actual departure from the identified stop. The format is HH:MM:SS. |
 | source | Optional | The **source** field contains the collection method of the associated data. |
 |   |  | * **0** - Manual.  |
 |   |  | * **1** - APC.  |
 |   |  | * **2** - AFC.  |
 |   |  | * **3** - Model estimation.  |
 |   |  | * **4** - Mixed source.  |
+| **direction_id** | **Required** | The **direction_id** contains an ID that uniquely identifies a direction. |
+| **service_door_opening_time** | **Required** | The **service_door_opening_time** field contains the time of the doors opening at the identified stop. The format is HH:MM:SS. |
+| **service_door_closing_time** | **Required** | The **service_door_closing_time** field contains the time of the doors closing at the identified stop. The format is HH:MM:SS. |
 
 ### *__trip_capacity.txt__*
 
-File: **Optional**
+File: **Required**
 
 |  Field Name | Required | Details |
 |  ------ | ------ | ------ |
-| agency_id | Optional | The **agency_id** field contains the ID of the agency associated with the capacity data. This value is referenced from the [agency.txt](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#agencytxt) file. Use this field when you are providing data from more than one agency.  |
-| trip_id | Optional | The **trip_id** field contains an id that uniquely identifies a trip. If an agency has only one type of vehicle, or operated only one type of vehicle on the given **service_date**, it can leave **trip_id** blank to specify the capacity of all trips with one record.    |
+| agency_id | **Required** | The **agency_id** field contains the ID of the agency associated with the capacity data. This value is referenced from the [agency.txt](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#agencytxt) file. Use this field when you are providing data from more than one agency.  |
+| trip_id | **Required** | The **trip_id** field contains an id that uniquely identifies a trip. If an agency has only one type of vehicle, or operated only one type of vehicle on the given **service_date**, it can leave **trip_id** blank to specify the capacity of all trips with one record.    |
 | service_date | Optional | The **service_date** field contains the date of the trip. If an agency has only one type of vehicle, or only ever operates one type of vehicle on the given trip, it can leave **service_date** blank to specify the capacity of all dates with one record. The format is YYYYMMDD. |
-| vehicle_description | Optional | The **vehicle_description** field contains the additional information about the vehicle(s) associated with **agency_id**, **trip_id**, and/or **service_date** needed for analysis or reporting. |
-| seated_capacity | Optional | The **seated_capacity** field contains the number of passenger seats.  Non-negative integer.|
-| standing_capacity | Optional | The **standing_capacity** field contains the maximum number of standees according to agency policy.  Non-negative integer.|
-| wheelchair_capacity | Optional | The **wheelchair_capacity** field contains the maximum number of wheelchairs vehicle will accommodate. Non-negative integer.|
-| bike_capacity | Optional | The **bike_capacity** field contains the maximum number of bikes vehicle will accommodate. Non-negative integer.|
+| vehicle_description | **Required** | The **vehicle_description** field contains the additional information about the vehicle(s) associated with **agency_id**, **trip_id**, and/or **service_date** needed for analysis or reporting. |
+| seated_capacity | **Required** | The **seated_capacity** field contains the number of passenger seats.  Non-negative integer.|
+| standing_capacity | **Required** | The **standing_capacity** field contains the maximum number of standees according to agency policy.  Non-negative integer.|
+| wheelchair_capacity | **Required** | The **wheelchair_capacity** field contains the maximum number of wheelchairs vehicle will accommodate. Non-negative integer.|
+| bike_capacity | **Required** | The **bike_capacity** field contains the maximum number of bikes vehicle will accommodate. Non-negative integer.|
+| **time_per_boarding** | **Required** | The **time_per_boarding** field contains the mean time per passenger boarding in seconds.|
+| **time_per_alighting** | **Required** | The **time_per_alighting** field contains the mean time per passenger alighting in seconds.|
+| **time_per_ramp_deployment** | **Required** | The **time_per_ramp_deployment** field contains the mean time to deploy the ramp or lift in seconds.|
+| **time_per_rack_deployment** | **Required** | The **time_per_rack_deployment** field contains the mean time to deploy the bike rack in seconds.|
 
 ### *__rider_trip.txt__*
 
@@ -250,8 +259,8 @@ File: **Required**
 |   |  | * **4** - board_alight and ridership |
 |   |  | * **5** - rider_trip and ridership |
 |   |  | * **6** - board_alight, rider_trip, and ridership |
-| ride_start_date | Optional | The **ride_start_date** field indicates the earliest date for the ridership data contained in the fileset. The date may match or be later than the **feed_start_date** of  [feed_info.txt](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#feed_infotxt). The date format is YYYYMMDD. |
-| ride_end_date | Optional | The **ride_end_date** field indicates the latest date for the ridership data contained in the fileset. It must be later than the **ride_start_date** and either match or be earlier than the **feed_end_date** of  [feed_info.txt](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#feed_infotxt). |
-| gtfs_feed_date | Optional | The **gtfs_feed_date** indicates the date the GTFS files contained in the GTFS-ride fileset were fetched as the current GTFS feed. If **feed_version** is not included in  [feed_info.txt](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#feed_infotxt), **gtfs_feed_date** allows association of GTFS files to when they were supplied as current.
+| ride_start_date | **Required** | The **ride_start_date** field indicates the earliest date for the ridership data contained in the fileset. The date may match or be later than the **feed_start_date** of  [feed_info.txt](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#feed_infotxt). The date format is YYYYMMDD. |
+| ride_end_date | **Required** | The **ride_end_date** field indicates the latest date for the ridership data contained in the fileset. It must be later than the **ride_start_date** and either match or be earlier than the **feed_end_date** of  [feed_info.txt](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#feed_infotxt). |
+| gtfs_feed_date | **Required** | The **gtfs_feed_date** indicates the date the GTFS files contained in the GTFS-ride fileset were fetched as the current GTFS feed. If **feed_version** is not included in  [feed_info.txt](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#feed_infotxt), **gtfs_feed_date** allows association of GTFS files to when they were supplied as current.
 | default_currency_type | Optional | The **default_currency_type** defines the default currency used  as payment. Please use the ISO 4217 alphabetical currency codes which can be found at the following URL: http://en.wikipedia.org/wiki/ISO_4217. |
-| ride_feed_version | Optional | The **ride_feed_version** is a feed publisher string used to determine the sequence of feed publication. It can be used to represent the most current data for feeds covering the same period.
+| ride_feed_version | **Required** | The **ride_feed_version** is a feed publisher string used to determine the sequence of feed publication. It can be used to represent the most current data for feeds covering the same period.
