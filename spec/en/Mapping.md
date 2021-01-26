@@ -29,7 +29,7 @@ The components of TheTransitClock's dwell time model are mapped to tables and fi
 
 _Only files unique to dwell time modeling are mapped below. Definitions for the tables and fields can be found at [https://github.com/TheTransitClock/GTFS/blob/master/gtfs/spec/en/reference.md](https://github.com/TheTransitClock/GTFS/blob/master/gtfs/spec/en/reference.md) for GTFS and [https://github.com/TheTransitClock/GTFS-ride/blob/master/spec/en/reference.md](https://github.com/TheTransitClock/GTFS-ride/blob/master/spec/en/reference.md) for GTFS ride._
 
-**Bolded** files are unique to TheTransitClock's version of GTFS-ride and GTFS.
+**Bolded** fields are unique to TheTransitClock's version of GTFS-ride and GTFS.
 
 
 ### *__stop_times.txt__*
