@@ -76,7 +76,7 @@ _Only files unique to GTFS-ride are defined below. Definitions for all other fil
 
 ### *__board_alight.txt__*
 
-File: **Optional**
+File: **Required**
 
 |  Field Name | Required | Details |
 |  ------ | ------ | ------ |
@@ -128,7 +128,7 @@ File: **Optional**
 
 ### *__trip_capacity.txt__*
 
-File: **Optional**
+File: **Required**
 
 |  Field Name | Required | Details |
 |  ------ | ------ | ------ |
